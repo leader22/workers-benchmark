@@ -12,18 +12,12 @@ and align implementation details.
 ## Code
 ### javascript
 ```javascript
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
+addEventListener("fetch", (ev) => {
+  ev.respondWith(handleEvent(ev))
 })
 
-/**
- * Respond with hello worker text
- * @param {Request} request
- */
-async function handleRequest(request) {
-  return new Response(`Hello worker! at ${request.url}`, {
-    headers: { 'content-type': 'text/plain' },
-  })
+async function handleEvent() {
+  return new Response("Hello worker!");
 }
 ```
 
@@ -32,16 +26,15 @@ async function handleRequest(request) {
 use worker::*;
 
 #[event(fetch)]
-pub async fn main(req: Request, _env: Env, _ctx: worker::Context) -> Result<Response> {
-    let res = String::from("Hello worker! at ") + &req.url()?.to_string();
-    Response::ok(res)
+pub async fn main(_req: Request, _env: Env, _ctx: worker::Context) -> Result<Response> {
+    Response::ok("Hello worker!")
 }
 ```
 
 ## Size
 ### javascript
 ```
-└── [ 313]  index.js
+└── [ 147]  index.js
 ```
 
 ### rust
@@ -49,7 +42,7 @@ pub async fn main(req: Request, _env: Env, _ctx: worker::Context) -> Result<Resp
 ├── [  71]  index.js
 └── [    ]  worker
     ├── [ 15K]  index_bg.mjs
-    ├── [340K]  index_bg.wasm
+    ├── [337K]  index_bg.wasm
     └── [ 182]  shim.mjs
 ```
 

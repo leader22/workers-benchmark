@@ -1,12 +1,7 @@
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
+addEventListener("fetch", (ev) => {
+  ev.respondWith(handleEvent(ev))
 })
-/**
- * Respond with hello worker text
- * @param {Request} request
- */
-async function handleRequest(request) {
-  return new Response(`Hello worker! at ${request.url}`, {
-    headers: { 'content-type': 'text/plain' },
-  })
+
+async function handleEvent() {
+  return new Response("Hello worker!");
 }
